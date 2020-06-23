@@ -56,11 +56,8 @@ ReviewSchema.statics.getAverageRating = async function (bootcampId) {
         }
     ])
 
-    console.log(obj)
-
     try {
         if (obj.length === 0) {
-            console.log('I ran')
             return await this.model('Bootcamp').findByIdAndUpdate(bootcampId, {
                 averageRating: 0                                        // Should be set to 0 if no reviews present
             })
