@@ -1,0 +1,51 @@
+First we created a cluster on mongodb atlas
+then we installed mongodb compass gui
+then we installed mongoose library
+after that created a env variable for mongo connection uri- using string of 2nd option on atlas page
+we created a db file having connect method
+we included that file in sever.js and handled the promise rejection
+
+
+// Steps for error handling
+we have used next() call for catching those error
+we setup a class errorResponse extending the error class
+we created a handler function, for catching different types of error
+we need to use that handler function in server file
+
+
+// Steps for new course route
+we created a model file first,
+then we added data into it using seeder
+we then created a controller file for it
+we created a route file for that and included and mounted it in server.js file
+for re-routing purpose we added logic to the bootcamp router file too, a resource-router
+
+// Populate and reverse populate with virtuals
+.populate function is used to do so
+we can use a object with some of the fields like path,select(to limit fields)
+In reverse populate we used virtual method, setting it on one of the model say parent
+and setting properties like local field, foreign field
+then using the populate call on query call
+
+// For fileupload we used express-fileupload module
+We created a controller and route logic for it
+then we used it in server file
+uploaded file is stored on req.files.file, so we used it for different tasks
+like checking file type, file size and changing file name before upload
+as file is being stored on a local file system we created a public folder for it
+and marked it as static in server file so that it can be accessed thru url
+
+// Changing the functionality and using middleware for fetching results
+It has the pagination, select(filter) and sorting logic
+It is applied to routes like, get all courses, get all bootcamps and get all reviews
+
+//For auth middleware
+We first created a new auth middleware file
+In that we extracted token from the header of the req
+Later we verified it with jwt verify method, which returns a object having payload data
+In that user id is present, then we add that auth function to all the protected routes
+
+// Security
+const mongoSanitize = require('express-mongo-sanitize')             // To prevent NoSQL Injections
+const helmet = require('helmet')                                    // Set security headers
+const xss = require('xss-clean')                                    // Prevent XSS attacks
