@@ -139,13 +139,9 @@ exports.forgotPassword = asyncHandler(async (req, res, next) => {
 
     await user.save({ validateBeforeSave: false })
 
-    console.log(resetToken)
-
     const resetUrl = `${req.protocol}://${req.get('host')}/api/v1/auth/resetpassword/${resetToken}`
-    const subject = 'DevCamper Password reset'
-    const message = `You requested a password reset. Please make PUT request at ${resetUrl} to change the password.`
-
-    console.log(resetUrl)
+    const subject = `DevCamper Password reset for user - ${user.id}`
+    const message = `Dear ${user.name}, \n\n You (or someone else has) requested a password reset for your account.\n\n Please make PUT request at ${resetUrl} to change the password.`
 
     try {
         sendEmail(req.body.email, subject, message)
