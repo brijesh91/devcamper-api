@@ -89,7 +89,7 @@ exports.updateReview = asyncHandler(async (req, res, next) => {
         runValidators: true
     })
 
-    // Make sure ratings are updated
+    // Make sure ratings are updated in bootcamp
     await review.save()
 
     res.status(200).json({

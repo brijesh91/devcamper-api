@@ -96,13 +96,16 @@ exports.updateCourse = asyncHandler(async (req, res, next) => {
         runValidators: true
     })
 
+    // Make sure averageCost is updated in bootcamp
+    course.save()
+
     res.status(200).json({
         success: true,
         data: course
     })
 })
 
-// @desc        Update course
+// @desc        Delete course
 // @route       DELETE /api/v1/courses/:id
 // @access      Private
 
