@@ -103,6 +103,10 @@ const BootcampSchema = new mongoose.Schema(
             type: mongoose.Schema.ObjectId,
             ref: 'User',
             required: true
+        },
+        joinedUsers: {
+            type: Array,
+            default: []
         }
     }, {
     toJSON: { virtuals: true },
@@ -116,7 +120,13 @@ const BootcampSchema = new mongoose.Schema(
 // and next needs to be used to let express know to move to the next middleware
 BootcampSchema.pre('save', function (next) {
     // console.log('Slugify ran', this.name)
-    this.slug = slugify(this.name, { lower: true })
+
+
+    if (this.isNew) {
+        console.log('I ran-')
+        this.slug = slugify(this.name, { lower: true })
+
+    }
     next()
 })
 
@@ -124,20 +134,26 @@ BootcampSchema.pre('save', function (next) {
 // Converting given address to the location property
 // mapquest geocode is used to do so
 BootcampSchema.pre('save', async function (next) {
-    const loc = await geocoder.geocode(this.address)
-    this.location = {
-        type: 'Point',
-        coordinates: [loc[0].longitude, loc[0].latitude],
-        formattedAddress: loc[0].formattedAddress,
-        street: loc[0].streetName,
-        city: loc[0].city,
-        state: loc[0].stateCode,
-        zipcode: loc[0].zipcode,
-        country: loc[0].countryCode
-    }
 
-    // Do not save address in DB
-    this.address = undefined
+
+    if (this.isNew) {
+        console.log('I ran--')
+        const loc = await geocoder.geocode(this.address)
+        this.location = {
+            type: 'Point',
+            coordinates: [loc[0].longitude, loc[0].latitude],
+            formattedAddress: loc[0].formattedAddress,
+            street: loc[0].streetName,
+            city: loc[0].city,
+            state: loc[0].stateCode,
+            zipcode: loc[0].zipcode,
+            country: loc[0].countryCode
+        }
+
+        // Do not save address in DB
+        this.address = undefined
+
+    }
     next()
 })
 

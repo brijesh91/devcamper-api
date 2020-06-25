@@ -1,9 +1,13 @@
 const express = require('express')
 
-const router = express.Router()
-const { register, login, getMe, updateDetails, forgotPassword, resetPassword, updatePassword, logout } = require('../controllers/auth')
+const router = express.Router({ mergeParams: true })
+const { register, login, getMe, updateDetails, forgotPassword, resetPassword, updatePassword, logout, joinBootcamp } = require('../controllers/auth')
 
-const { protect } = require('../middleware/auth')
+const { protect, authorize } = require('../middleware/auth')
+
+router
+    .route('/')
+    .put(protect, authorize('user'), joinBootcamp)
 
 router.post('/register', register)
 

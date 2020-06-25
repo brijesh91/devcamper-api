@@ -182,6 +182,42 @@ exports.resetPassword = asyncHandler(async (req, res, next) => {
     sendTokenResponse(user, 200, res)
 })
 
+// @desc        Join bootcamp
+// @route       PUT /api/v1/bootcamps/:bootcampId/join
+// @access      Private
+
+exports.joinBootcamp = asyncHandler(async (req, res, next) => {
+
+    console.log(req.params)
+
+    let bootcamp = await Bootcamp.findById(req.params.bootcampId)
+
+    if (!bootcamp) {
+        return next(new ErrorResponse(`No bootcamp with the id of ${req.params.bootcampId}`, 404))
+    }
+
+    let user = req.user
+    let joinedUsers = bootcamp.joinedUsers
+    let joinedBootcamp = user.joinedBootcamp
+
+    if (joinedUsers.includes(req.user.id) && joinedBootcamp.includes(req.params.bootcampId)) {
+        return next(new ErrorResponse(`User ${req.user.id} has already joined Bootcamp ${req.params.bootcampId}`, 400))
+    }
+
+    joinedUsers.push(req.user.id)
+    joinedBootcamp.push(req.params.bootcampId)
+
+    await bootcamp.save({ validateBeforeSave: false })
+    await user.save({ validateBeforeSave: false })
+
+    res.status(200).json({
+        success: true,
+        data: bootcamp
+    })
+
+})
+
+
 // Get token from model, create cookie and send response
 const sendTokenResponse = (user, statusCode, res) => {
 

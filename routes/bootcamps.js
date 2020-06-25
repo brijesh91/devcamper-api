@@ -6,6 +6,8 @@ const Bootcamp = require('../models/Bootcamp')
 // Include middleware other resource routers
 const courseRouter = require('./courses')
 const reviewRouter = require('./reviews')
+const authRouter = require('./auth')
+
 
 const router = express.Router()
 
@@ -15,6 +17,8 @@ const { protect, authorize } = require('../middleware/auth')
 // Re-route into other resource routers
 router.use('/:bootcampId/courses', courseRouter)
 router.use('/:bootcampId/reviews', reviewRouter)
+router.use('/:bootcampId/join', authRouter)
+
 
 // This is done to separate logic from router file, it is a neat way
 //When route is /api/v1/bootcamps
