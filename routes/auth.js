@@ -7,7 +7,7 @@ const { protect, authorize } = require('../middleware/auth')
 
 router
     .route('/')
-    .put(protect, authorize('user'), joinBootcamp)
+    .put(protect, authorize('user', 'admin'), joinBootcamp)
 
 router.post('/register', register)
 

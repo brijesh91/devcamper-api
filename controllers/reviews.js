@@ -60,7 +60,7 @@ exports.addReview = asyncHandler(async (req, res, next) => {
     }
 
     if (!bootcamp.joinedUsers.includes(req.user.id)) {
-        return next(new ErrorResponse(`Cannot add review with user id of ${req.user.id}`, 400))
+        return next(new ErrorResponse(`Unauthorized to add a review with the user id of ${req.user.id}`, 401))
     }
 
     const review = await Review.create(req.body)
